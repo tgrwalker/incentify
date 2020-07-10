@@ -23,12 +23,12 @@ const PointsCard = ({ name, desc, points, onAddPoints }) => {
   )
 };
 
-const CardForm = () => {
+const CardForm = ({ formTitle }) => {
   const [text, setText] = useState('');
 
   return (
     <TextInput
-      label='Task'
+      label={formTitle}
       value={text}
       onChangeText={text => setText(text)}
     />
@@ -41,6 +41,11 @@ export default function App() {
     { name: 'Brush Teeth',   desc: 'Maybe floss, too', points: 10},
     { name: 'Walk Dog',   desc: '15 minute walk around the neighborhood', points: 20},
   ]
+  const form = [
+    { fTitle: 'Task'},
+    { fTitle: 'Description'},
+    { fTitle: 'Points'},
+  ]
   const [total, add] = useState(0)
   const addPoints = (points) => add(total + points)
   return (
@@ -49,7 +54,7 @@ export default function App() {
         Total Score: { total }
       </Text>
       {content.map(c => <PointsCard key={c.title} name={c.name} desc={c.desc} points={c.points} onAddPoints={() => addPoints(c.points)} /> )}
-      <CardForm />
+      {form.map(f => <CardForm key={f.form} formTitle={f.fTitle} /> )}
     </View>
   );
 }
