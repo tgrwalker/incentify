@@ -6,11 +6,10 @@ import Constants from 'expo-constants';
 import AssetExample from './components/AssetExample';
 
 // or any pure javascript modules available in npm
-import { Avatar, Button, Card, Title } from 'react-native-paper';
+import { Avatar, Button, Card, Title, TextInput } from 'react-native-paper';
 
-const PointsCard = ({ name, desc, points }) => {
-  const [total, add] = useState(0)
-  const showAlert = () => add(total + points)
+const PointsCard = ({ name, desc, points, dongle }) => {
+  const handleClick = () => dongle(points)
   const showAlert2 = () => alert('u suck')
   const LeftContent = () => ( 
   <Avatar.Text size={36} label={points} /> 
@@ -18,17 +17,26 @@ const PointsCard = ({ name, desc, points }) => {
 
   return (
   <View>
-  <Text style={styles.paragraph}>
-    Total Score: { total }
-  </Text>
   <Card>
     <Card.Title title={name} subtitle={desc} left={LeftContent} />
     <Card.Actions>
-      <Button onClick={showAlert}>DONE!</Button>
+      <Button onClick={handleClick}>DONE!</Button>
       <Button onClick={showAlert2}>MISSED</Button>
     </Card.Actions>
   </Card>
   </View>
+  )
+};
+
+const CardForm = () => {
+  const [text, setText] = useState('');
+
+  return (
+    <TextInput
+      label='Task'
+      value={text}
+      onChangeText={text => setText(text)}
+    />
   )
 };
 
@@ -38,9 +46,15 @@ export default function App() {
     { name: 'Brush Teeth',   desc: 'Maybe floss, too', points: 10},
     { name: 'Walk Dog',   desc: '15 minute walk around the neighborhood', points: 20},
   ]
+  const [total, add] = useState(0)
+  const addPoints = (points) => add(total + points)
   return (
     <View style={styles.container}>
-      {content.map(c => <PointsCard key={c.title} name={c.name} desc={c.desc} points={c.points}/> )}
+      <Text style={styles.paragraph}>
+        Total Score: { total }
+      </Text>
+      {content.map(c => <PointsCard key={c.title} name={c.name} desc={c.desc} points={c.points} dongle={addPoints} /> )}
+      <CardForm />
     </View>
   );
 }
