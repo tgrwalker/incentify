@@ -2,15 +2,11 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
-// You can import from local files
-import AssetExample from './components/AssetExample';
-
 // or any pure javascript modules available in npm
 import { Avatar, Button, Card, Title, TextInput } from 'react-native-paper';
 
-const PointsCard = ({ name, desc, points, dongle }) => {
-  const handleClick = () => dongle(points)
-  const showAlert2 = () => alert('u suck')
+const PointsCard = ({ name, desc, points, onAddPoints }) => {
+  const handleClick = () => onAddPoints(points)
   const LeftContent = () => ( 
   <Avatar.Text size={36} label={points} /> 
 );
@@ -21,7 +17,6 @@ const PointsCard = ({ name, desc, points, dongle }) => {
     <Card.Title title={name} subtitle={desc} left={LeftContent} />
     <Card.Actions>
       <Button onClick={handleClick}>DONE!</Button>
-      <Button onClick={showAlert2}>MISSED</Button>
     </Card.Actions>
   </Card>
   </View>
@@ -53,7 +48,7 @@ export default function App() {
       <Text style={styles.paragraph}>
         Total Score: { total }
       </Text>
-      {content.map(c => <PointsCard key={c.title} name={c.name} desc={c.desc} points={c.points} dongle={addPoints} /> )}
+      {content.map(c => <PointsCard key={c.title} name={c.name} desc={c.desc} points={c.points} onAddPoints={() => addPoints(c.points)} /> )}
       <CardForm />
     </View>
   );
